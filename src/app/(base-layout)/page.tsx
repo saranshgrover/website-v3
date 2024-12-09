@@ -19,7 +19,7 @@ const ImageGalleryBlock = dynamic(() => import('@/components/blocks/ImageGallery
 const Code = dynamic(() => import('@/components/Code'));
 const HeadingWithAnchorLink = dynamic(() => import('@/components/HeadingWithAnchorLink'));
 
-export const query = graphql(
+const homeQuery = graphql(
   /* GraphQL */ `
     query HomeQuery {
       home {
@@ -63,7 +63,7 @@ export const query = graphql(
 );
 
 export const generateMetadata = generateMetadataFn({
-  query,
+  query: homeQuery,
   pickSeoMetaTags: (data) => data.home?._seoMetaTags,
 });
 
@@ -71,7 +71,7 @@ export default async function Page() {
   const { isEnabled: isDraftModeEnabled } = draftMode();
 
   try {
-    const { home } = await executeQuery(query, {
+    const { home } = await executeQuery(homeQuery, {
       includeDrafts: isDraftModeEnabled,
     });
 
@@ -92,9 +92,9 @@ export default async function Page() {
               </HeadingWithAnchorLink>
             )),
             renderNodeRule(isLink, ({ node, key, children }) => (
-              <Link 
-                className="font-medium hover:text-primary transition-colors" 
-                href={node.url} 
+              <Link
+                className="font-medium hover:text-primary transition-colors"
+                href={node.url}
                 key={key}
               >
                 {children}
@@ -116,7 +116,7 @@ export default async function Page() {
           renderInlineRecord={({ record }) => {
             if (record.__typename === 'PageRecord') {
               return (
-                <Link 
+                <Link
                   href={`/${record.slug}`}
                   className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
                 >
@@ -129,7 +129,7 @@ export default async function Page() {
           renderLinkToRecord={({ record, children }) => {
             if (record.__typename === 'PageRecord') {
               return (
-                <Link 
+                <Link
                   href={`/${record.slug}`}
                   className="font-medium hover:text-primary transition-colors"
                 >

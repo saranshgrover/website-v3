@@ -328,6 +328,7 @@ type HomeRecord implements RecordInterface {
   seoSettingsSocial: SeoField
   slug: String!
   structuredText: HomeModelStructuredTextField!
+  test: String
   title: String!
 }
 

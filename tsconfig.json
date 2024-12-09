@@ -16,11 +16,11 @@
       {
         "name": "next"
       },
-      {
-        "name": "@0no-co/graphqlsp",
-        "schema": "./schema.graphql",
+      { 
+        "name": "gql.tada/ts-plugin", 
+        "schema": "./schema.graphql", 
         "tadaOutputLocation": "./src/lib/datocms/graphql-env.d.ts"
-      }
+      } 
     ],
     "paths": {
       "@/*": ["./src/*"]
