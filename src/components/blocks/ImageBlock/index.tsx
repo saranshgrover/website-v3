@@ -1,6 +1,6 @@
 import ResponsiveImage, { ResponsiveImageFragment } from '@/components/ResponsiveImage';
 import { type FragmentOf, graphql, readFragment } from '@/lib/datocms/graphql';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 
 /**
  * Let's define the GraphQL fragment needed for the component to function.
@@ -38,13 +38,8 @@ export default function ImageBlock({ data }: Props) {
   return (
     <Card className="border-none shadow-none">
       <CardContent className="p-0">
-        <ResponsiveImage 
-          data={unmaskedData.asset.responsiveImage} 
-          className="rounded-lg"
-        />
-        <p className="mt-2 text-sm text-muted-foreground text-center">
-          {unmaskedData.asset.title}
-        </p>
+        <ResponsiveImage data={unmaskedData.asset.responsiveImage} className="rounded-lg" />
+        <p className="mt-2 text-sm text-muted-foreground text-center">{unmaskedData.asset.title}</p>
       </CardContent>
     </Card>
   );

@@ -21,11 +21,15 @@ export default function Code({ node }: Props) {
   }, []);
 
   return (
-    <pre className={cn(
-      'rounded-lg border bg-muted px-4 py-3 font-mono text-sm',
-      `language-${node.language}`
-    )}>
-      <code ref={ref} className="relative">{node.code}</code>
+    <pre
+      className={cn(
+        'rounded-lg border bg-muted px-4 py-3 font-mono text-sm',
+        `language-${node.language}`,
+      )}
+    >
+      <code ref={ref} className="relative">
+        {node.code}
+      </code>
     </pre>
   );
 }

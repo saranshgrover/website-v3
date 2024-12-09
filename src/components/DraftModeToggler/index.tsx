@@ -33,10 +33,7 @@ export default function DraftModeToggler({ draftModeEnabled }: Props) {
   }
 
   return (
-    <Button
-      variant={draftModeEnabled ? "destructive" : "default"}
-      onClick={handleClick}
-    >
+    <Button variant={draftModeEnabled ? 'destructive' : 'default'} onClick={handleClick}>
       {draftModeEnabled ? 'Disable Draft Mode' : 'Enable Draft Mode'}
     </Button>
   );

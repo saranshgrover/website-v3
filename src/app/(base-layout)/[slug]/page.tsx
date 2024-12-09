@@ -64,7 +64,6 @@ export const query = graphql(
   [TagFragment, ImageBlockFragment, ImageGalleryBlockFragment, VideoBlockFragment],
 );
 
-
 export const generateMetadata = generateMetadataFn<Props, any, { slug: string }>({
   query,
   pickSeoMetaTags: (data) => data.page?._seoMetaTags,
@@ -78,7 +77,7 @@ interface Props {
 
 export default async function Page({ params }: Props) {
   const { isEnabled: isDraftModeEnabled } = draftMode();
-  
+
   if (!params.slug) {
     notFound();
   }
@@ -106,9 +105,9 @@ export default async function Page({ params }: Props) {
               </HeadingWithAnchorLink>
             )),
             renderNodeRule(isLink, ({ node, key, children }) => (
-              <Link 
-                className="font-medium hover:text-primary transition-colors" 
-                href={node.url} 
+              <Link
+                className="font-medium hover:text-primary transition-colors"
+                href={node.url}
                 key={key}
               >
                 {children}
@@ -130,7 +129,7 @@ export default async function Page({ params }: Props) {
           renderInlineRecord={({ record }) => {
             if (record.__typename === 'PageRecord') {
               return (
-                <Link 
+                <Link
                   href={`/${record.slug}`}
                   className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
                 >
@@ -143,7 +142,7 @@ export default async function Page({ params }: Props) {
           renderLinkToRecord={({ record, children }) => {
             if (record.__typename === 'PageRecord') {
               return (
-                <Link 
+                <Link
                   href={`/${record.slug}`}
                   className="font-medium hover:text-primary transition-colors"
                 >

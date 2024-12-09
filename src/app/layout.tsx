@@ -48,19 +48,19 @@ export default function RootLayout({
                 <h1 className="text-xl font-bold">DatoCMS + Next.js Starter Kit</h1>
                 <nav className="flex items-center gap-4">
                   <ThemeToggle />
-                  <a 
+                  <a
                     className="text-sm font-medium hover:text-primary transition-colors"
                     href="https://www.datocms.com/docs/next-js"
                   >
                     📚 Full Integration Guide
                   </a>
-                  <a 
+                  <a
                     className="text-sm font-medium hover:text-primary transition-colors"
                     href="/basic-template"
                   >
                     🔧 Basic Route
                   </a>
-                  <a 
+                  <a
                     className="text-sm font-medium hover:text-primary transition-colors"
                     href="/real-time-updates"
                   >
@@ -70,9 +70,7 @@ export default function RootLayout({
                 <DraftModeToggler draftModeEnabled={draftMode().isEnabled} />
               </div>
             </header>
-            <main className="container flex-1 py-6">
-              {children}
-            </main>
+            <main className="container flex-1 py-6">{children}</main>
           </div>
         </ThemeProvider>
       </body>

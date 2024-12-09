@@ -1,7 +1,7 @@
 import ResponsiveImage, { ResponsiveImageFragment } from '@/components/ResponsiveImage';
 import { type FragmentOf, graphql, readFragment } from '@/lib/datocms/graphql';
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Card, CardContent } from '@/components/ui/card';
 
 /**
  * Let's define the GraphQL fragment needed for the component to function.
@@ -44,15 +44,13 @@ export default function ImageGalleryBlock({ data }: Props) {
           <Card key={asset.id} className="w-[300px] shrink-0 shadow-none border-none">
             <CardContent className="p-0">
               <div className="overflow-hidden">
-                <ResponsiveImage 
-                  data={asset.responsiveImage} 
+                <ResponsiveImage
+                  data={asset.responsiveImage}
                   className="rounded-md w-full h-auto object-cover"
                   pictureClassName="w-full"
                 />
               </div>
-              <p className="mt-3 text-sm text-center text-muted-foreground">
-                {asset.title}
-              </p>
+              <p className="mt-3 text-sm text-center text-muted-foreground">{asset.title}</p>
             </CardContent>
           </Card>
         ))}

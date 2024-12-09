@@ -1,6 +1,6 @@
 import VideoPlayer, { VideoPlayerFragment } from '@/components/VideoPlayer';
 import { type FragmentOf, graphql, readFragment } from '@/lib/datocms/graphql';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 
 /**
  * Let's define the GraphQL fragment needed for the component to function.
@@ -39,9 +39,7 @@ export default function VideoBlock({ data }: Props) {
         <div className="rounded-lg overflow-hidden">
           <VideoPlayer data={unmaskedData.asset} />
         </div>
-        <p className="mt-2 text-sm text-muted-foreground text-center">
-          {unmaskedData.asset.title}
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground text-center">{unmaskedData.asset.title}</p>
       </CardContent>
     </Card>
   );
