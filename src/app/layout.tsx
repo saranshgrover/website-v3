@@ -45,32 +45,65 @@ export default function RootLayout({
           <div className="relative flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-14 items-center justify-between py-6">
-                <h1 className="text-xl font-bold">DatoCMS + Next.js Starter Kit</h1>
-                <nav className="flex items-center gap-4">
+                <h1 className="text-xl font-bold">Saransh Grover</h1>
+                <nav className="flex items-center gap-6">
                   <ThemeToggle />
                   <a
                     className="text-sm font-medium hover:text-primary transition-colors"
-                    href="https://www.datocms.com/docs/next-js"
+                    href="/about"
                   >
-                    📚 Full Integration Guide
+                    About
                   </a>
                   <a
                     className="text-sm font-medium hover:text-primary transition-colors"
-                    href="/basic-template"
+                    href="/projects"
                   >
-                    🔧 Basic Route
+                    Projects
                   </a>
                   <a
                     className="text-sm font-medium hover:text-primary transition-colors"
-                    href="/real-time-updates"
+                    href="/blog"
                   >
-                    ⚡️ Real-time Updates Route
+                    Blog
+                  </a>
+                  <a
+                    className="text-sm font-medium hover:text-primary transition-colors"
+                    href="/resume"
+                  >
+                    Resume
                   </a>
                 </nav>
-                <DraftModeToggler draftModeEnabled={draftMode().isEnabled} />
               </div>
             </header>
             <main className="container flex-1 py-6">{children}</main>
+            <footer className="border-t bg-background">
+              <div className="container flex h-14 items-center justify-center gap-6 py-6">
+                <a
+                  href="https://github.com/yourusername"
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://linkedin.com/in/yourusername"
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://twitter.com/yourusername"
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Twitter
+                </a>
+              </div>
+            </footer>
           </div>
         </ThemeProvider>
       </body>

@@ -20,7 +20,7 @@ const ImageGalleryBlock = dynamic(() => import('@/components/blocks/ImageGallery
 const Code = dynamic(() => import('@/components/Code'));
 const HeadingWithAnchorLink = dynamic(() => import('@/components/HeadingWithAnchorLink'));
 
-export const query = graphql(
+const query = graphql(
   /* GraphQL */ `
     query PageQuery($slug: String!) {
       page(filter: { slug: { eq: $slug } }) {
