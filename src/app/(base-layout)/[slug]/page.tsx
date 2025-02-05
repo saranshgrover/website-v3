@@ -106,26 +106,21 @@ export default async function Page({ params }: Props) {
         {page.coverImage && (
           <div className="relative h-[60vh] min-h-[400px] w-full mb-8 rounded-lg overflow-hidden">
             <img
-              src={page.coverImage.responsiveImage.src}
-              alt={page.coverImage.responsiveImage.alt || page.title}
+              src={page.coverImage?.responsiveImage?.src || ''}
+              alt={page.coverImage?.responsiveImage?.alt || page.title}
               className="object-cover object-center w-full h-full"
             />
           </div>
         )}
-        
+
         <article className="prose prose-stone dark:prose-invert max-w-none">
           <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">
-              {page.title}
-            </h1>
-            <time 
-              dateTime={page._firstPublishedAt}
-              className="text-sm text-muted-foreground"
-            >
-              {new Date(page._firstPublishedAt).toLocaleDateString('en-US', {
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">{page.title}</h1>
+            <time dateTime={page._firstPublishedAt || ''} className="text-sm text-muted-foreground">
+              {new Date(page._firstPublishedAt || '').toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </time>
           </header>
@@ -193,10 +188,10 @@ export default async function Page({ params }: Props) {
 
           <footer className="mt-16 pt-8 border-t border-border text-sm text-muted-foreground">
             Published on{' '}
-            {new Date(page._firstPublishedAt).toLocaleDateString('en-US', {
+            {new Date(page._firstPublishedAt || '').toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
-              day: 'numeric'
+              day: 'numeric',
             })}
           </footer>
         </article>

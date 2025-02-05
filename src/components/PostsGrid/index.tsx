@@ -48,7 +48,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Posts & Projects</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Articles and posts detailing projects, learnings, and more
+            Articles and posts detailing projects, learnings, and more
           </p>
         </motion.div>
 
@@ -66,10 +66,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
                   <Card className="h-full hover:shadow-lg transition-shadow bg-background/20 backdrop-blur-sm border-muted">
                     {post.coverImage && (
                       <CardHeader className="p-0">
-                        <Image
-                          data={post.coverImage.responsiveImage}
-                          className="rounded-t-lg"
-                        />
+                        <Image data={post.coverImage.responsiveImage} className="rounded-t-lg" />
                       </CardHeader>
                     )}
                     <CardContent className="p-6">
@@ -92,4 +89,4 @@ export function PostsGrid({ posts }: PostsGridProps) {
       </div>
     </div>
   );
-} 
+}

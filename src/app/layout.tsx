@@ -6,7 +6,7 @@ import { graphql } from '@/lib/datocms/graphql';
 import { draftMode } from 'next/headers';
 import { toNextMetadata } from 'react-datocms';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { Footer } from '@/components/Footer'
+import { Footer } from '@/components/Footer';
 
 import './global.css';
 
@@ -19,7 +19,7 @@ const query = graphql(
         }
       }
       nav {
-       links {
+        links {
           href
           label
           newTab

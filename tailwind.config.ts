@@ -7,11 +7,11 @@ const config: Config = {
         shimmer: {
           '0%': {
             backgroundPosition: '-200% 0',
-            opacity: 0.5,
+            opacity: '0.5',
           },
           '100%': {
             backgroundPosition: '200% 0',
-            opacity: 0.7,
+            opacity: '0.7',
           },
         },
       },
@@ -23,6 +23,7 @@ const config: Config = {
       },
     },
   },
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
 };
 
 export default config;

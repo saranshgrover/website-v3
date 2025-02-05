@@ -1,10 +1,8 @@
 import { graphql } from '@/lib/datocms/graphql';
-import {
-  TagFragment,
-  ImageBlockFragment,
-  ImageGalleryBlockFragment,
-  VideoBlockFragment,
-} from '@/lib/datocms/commonFragments';
+import { TagFragment } from '@/lib/datocms/commonFragments';
+import { ImageBlockFragment } from '@/components/blocks/ImageBlock';
+import { ImageGalleryBlockFragment } from '@/components/blocks/ImageGalleryBlock';
+import { VideoBlockFragment } from '@/components/blocks/VideoBlock';
 
 export const homeQuery = graphql(
   `

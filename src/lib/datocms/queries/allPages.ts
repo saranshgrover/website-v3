@@ -23,4 +23,4 @@ export const ALL_PAGES_QUERY = graphql(`
       }
     }
   }
-`); 
+`);

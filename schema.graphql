@@ -2478,11 +2478,11 @@ type PageRecord implements RecordInterface {
   _status: ItemStatus!
   _unpublishingScheduledAt: DateTime
   _updatedAt: DateTime!
-  coverImage: FileField
+  coverImage: FileField!
   excerpt(
     """Process content as markdown"""
     markdown: Boolean
-  ): String
+  ): String!
   id: ItemId!
   seoAnalysis: JsonField
   seoSettingsSocial: SeoField
