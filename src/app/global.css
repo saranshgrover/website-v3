@@ -118,7 +118,6 @@
   }
 }
 
-/* Keep your existing highlight.js styles */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.css')
   screen and (prefers-color-scheme: dark);
 

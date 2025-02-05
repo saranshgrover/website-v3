@@ -1,9 +1,14 @@
 import { graphql } from '@/lib/datocms/graphql';
-import { TagFragment, ImageBlockFragment, ImageGalleryBlockFragment, VideoBlockFragment } from '@/lib/datocms/commonFragments';
+import {
+  TagFragment,
+  ImageBlockFragment,
+  ImageGalleryBlockFragment,
+  VideoBlockFragment,
+} from '@/lib/datocms/commonFragments';
 
 export const homeQuery = graphql(
   `
-  query HomeQuery {
+    query HomeQuery {
       home {
         _seoMetaTags {
           ...TagFragment
@@ -42,4 +47,4 @@ export const homeQuery = graphql(
     }
   `,
   [TagFragment, ImageBlockFragment, ImageGalleryBlockFragment, VideoBlockFragment],
-); 
+);

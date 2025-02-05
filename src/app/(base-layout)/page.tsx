@@ -1,4 +1,3 @@
-
 import dynamic from 'next/dynamic';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';

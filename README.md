@@ -2,7 +2,6 @@
 
 Code that runs on https://saranshgrover.com.
 
-
 Previous versions:
 
 - 2024: https://saranshgrover.com

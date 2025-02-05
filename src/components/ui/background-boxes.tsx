@@ -1,39 +1,81 @@
-"use client";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 type BoxesProps = {
   className?: string;
-  variant?: "none" | "scroll" | "click";
+  variant?: 'none' | 'scroll' | 'click' | 'random';
+  randomBoxCount?: number; // Number of boxes to randomly highlight
 };
 
-export const BoxesCore = ({ className, variant = "none", ...rest }: BoxesProps) => {
-  const rows = new Array(150).fill(1);
-  const cols = new Array(100).fill(1);
-  const colors = [
-    "--white-300",
-    "--red-500",
-    "--blue-500",
-    "--orange-500",
-    "--green-500",
-    "--yellow-300",
-  ];
+export const BoxesCore = ({ 
+  className, 
+  variant = 'none', 
+  randomBoxCount = 30,
+  ...rest 
+}: BoxesProps) => {
+  // Memoize the grid dimensions to avoid recalculation
+  const ROWS = 150;
+  const COLS = 100;
+  
+  const colors = useMemo(() => [
+    '--white-300',
+    '--red-500',
+    '--blue-500',
+    '--orange-500',
+    '--green-500',
+    '--yellow-300',
+  ], []);
 
   // State to store persistent colors
   const [persistentColors, setPersistentColors] = useState<{ [key: string]: string }>({});
 
-  const getRandomColor = () => {
+  // Memoize the getRandomColor function
+  const getRandomColor = useCallback(() => {
     return colors[Math.floor(Math.random() * colors.length)];
-  };
+  }, [colors]);
 
-  const handleInteraction = (key: string) => {
-    if (variant === "none") return;
-    setPersistentColors((prev) => ({
-      ...prev,
-      [key]: `var(${getRandomColor()})`,
-    }));
-  };
+  // Initialize random boxes when variant is 'random'
+  useEffect(() => {
+    if (variant === 'random') {
+      const initialColors: { [key: string]: string } = {};
+      const totalBoxes = ROWS * COLS;
+      const boxIndices = new Set<number>();
+
+      // Generate unique random box indices
+      while (boxIndices.size < randomBoxCount) {
+        boxIndices.add(Math.floor(Math.random() * totalBoxes));
+      }
+
+      // Set colors for random boxes
+      boxIndices.forEach((index) => {
+        const row = Math.floor(index / COLS);
+        const col = index % COLS;
+        initialColors[`${row}-${col}`] = `var(${getRandomColor()})`;
+      });
+
+      setPersistentColors(initialColors);
+    }
+  }, [variant, randomBoxCount, ROWS, COLS, getRandomColor]);
+
+  const handleInteraction = useCallback((key: string) => {
+    if (variant === 'none') return;
+    
+    setPersistentColors((prev) => {
+      const newColors = { ...prev };
+      if (newColors[key]) {
+        delete newColors[key]; // Toggle off if already colored
+      } else {
+        newColors[key] = `var(${getRandomColor()})`; // Toggle on with new color
+      }
+      return newColors;
+    });
+  }, [variant, getRandomColor]);
+
+  // Memoize the rows array
+  const rows = useMemo(() => Array.from({ length: ROWS }, (_, i) => i), [ROWS]);
+  const cols = useMemo(() => Array.from({ length: COLS }, (_, i) => i), [COLS]);
 
   return (
     <div
@@ -41,34 +83,35 @@ export const BoxesCore = ({ className, variant = "none", ...rest }: BoxesProps) 
         transform: `translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)`,
       }}
       className={cn(
-        "absolute left-1/4 p-4 -top-1/4 flex  -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 ",
+        'absolute left-1/4 p-4 -top-1/4 flex -translate-x-1/2 -translate-y-1/2 w-[100vw] h-screen pointer-events-none',
         className
       )}
       {...rest}
     >
-      {rows.map((_, i) => (
-        <motion.div
-          key={`row` + i}
-          className="w-16 h-8  border-l  border-slate-700 relative"
+      {rows.map((i) => (
+        <motion.div 
+          key={`row-${i}`} 
+          className="w-16 h-8 border-l border-slate-700 relative pointer-events-auto"
         >
-          {cols.map((_, j) => {
+          {cols.map((j) => {
             const boxKey = `${i}-${j}`;
+            const shouldRenderPlus = j % 2 === 0 && i % 2 === 0;
+            
             return (
               <motion.div
                 whileHover={{
-                  backgroundColor:  `var(${getRandomColor()})`,
+                  backgroundColor: `var(${getRandomColor()})`,
                   transition: { duration: 0 },
                 }}
                 animate={{
-                  backgroundColor: persistentColors[boxKey],
+                  backgroundColor: persistentColors[boxKey] || '',
                   transition: { duration: 2 },
                 }}
-                key={`col` + j}
-                className="w-16 h-8  border-r border-t border-slate-700 relative"
-                onClick={() => variant === "click" && handleInteraction(boxKey)}
-                onViewportEnter={() => variant === "scroll" && handleInteraction(boxKey)}
+                onClick={() => handleInteraction(boxKey)}
+                key={`${boxKey}`}
+                className="w-16 h-8 border-r border-t border-slate-700 relative cursor-crosshair"
               >
-                {j % 2 === 0 && i % 2 === 0 ? (
+                {shouldRenderPlus && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -77,13 +120,9 @@ export const BoxesCore = ({ className, variant = "none", ...rest }: BoxesProps) 
                     stroke="currentColor"
                     className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-700 stroke-[1px] pointer-events-none"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6v12m6-6H6"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                   </svg>
-                ) : null}
+                )}
               </motion.div>
             );
           })}
