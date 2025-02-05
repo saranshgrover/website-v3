@@ -27,30 +27,26 @@ export default function HomeArticle({ home }: HomeArticleProps) {
   }));
 
   return (
-    <div className="relative min-h-screen">
-      {/* Background Boxes */}
-      <Boxes 
-        variant="random" 
-        randomBoxCount={500} 
-        className="opacity-20" 
-      />
+    <div className="relative  min-h-screen overflow-x-hidden">
+      {/* Background Boxes - Updated positioning */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <Boxes variant="random" randomBoxCount={500} className="opacity-20" />
+      </div>
 
-      <motion.article
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className=""
-      >
-        {/* Hero Section - Reduced spacing */}
-        <div className="min-h-[45vh] flex flex-col justify-center items-center text-center">
-          <div className="relative">
+      <motion.article transition={{ duration: 0.5 }}>
+        {/* Hero Section - Reduced width */}
+        <div className="min-h-[45vh] flex flex-col justify-center items-center text-center ">
+          <div className="relative px-4">
             <motion.div
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
               className="mb-8"
             >
-              <TypewriterEffect words={words} className="text-6xl md:text-7xl font-bold tracking-tight" />
+              <TypewriterEffect
+                words={words}
+                className="text-6xl md:text-7xl font-bold tracking-tight"
+              />
             </motion.div>
 
             <motion.div
@@ -64,7 +60,7 @@ export default function HomeArticle({ home }: HomeArticleProps) {
           </div>
         </div>
 
-        {/* About Section - Reduced padding */}
+        {/* About Section - Reduced width */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -72,7 +68,7 @@ export default function HomeArticle({ home }: HomeArticleProps) {
           viewport={{ once: true }}
           className="bg-background/20 backdrop-blur-sm"
         >
-          <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="max-w-3xl mx-auto px-6 py-12">
             <div className="prose-lg">
               <StructuredText
                 data={home.structuredText}
@@ -136,9 +132,11 @@ export default function HomeArticle({ home }: HomeArticleProps) {
           </div>
         </motion.div>
 
-        {/* Projects Section - Updated background opacity */}
-        <div className="relative z-10 bg-background/20 backdrop-blur-sm">
-          <ProjectsGrid />
+        {/* Projects Section */}
+        <div className="relative bg-background/20 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto">
+            <ProjectsGrid />
+          </div>
         </div>
       </motion.article>
     </div>

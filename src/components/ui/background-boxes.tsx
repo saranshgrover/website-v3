@@ -9,24 +9,20 @@ type BoxesProps = {
   randomBoxCount?: number; // Number of boxes to randomly highlight
 };
 
-export const BoxesCore = ({ 
-  className, 
-  variant = 'none', 
+export const BoxesCore = ({
+  className,
+  variant = 'none',
   randomBoxCount = 30,
-  ...rest 
+  ...rest
 }: BoxesProps) => {
-  // Memoize the grid dimensions to avoid recalculation
+  // Increase grid size further
   const ROWS = 150;
-  const COLS = 100;
-  
-  const colors = useMemo(() => [
-    '--white-300',
-    '--red-500',
-    '--blue-500',
-    '--orange-500',
-    '--green-500',
-    '--yellow-300',
-  ], []);
+  const COLS = 120;
+
+  const colors = useMemo(
+    () => ['--white-300', '--red-500', '--blue-500', '--orange-500', '--green-500', '--yellow-300'],
+    [],
+  );
 
   // State to store persistent colors
   const [persistentColors, setPersistentColors] = useState<{ [key: string]: string }>({});
@@ -59,19 +55,22 @@ export const BoxesCore = ({
     }
   }, [variant, randomBoxCount, ROWS, COLS, getRandomColor]);
 
-  const handleInteraction = useCallback((key: string) => {
-    if (variant === 'none') return;
-    
-    setPersistentColors((prev) => {
-      const newColors = { ...prev };
-      if (newColors[key]) {
-        delete newColors[key]; // Toggle off if already colored
-      } else {
-        newColors[key] = `var(${getRandomColor()})`; // Toggle on with new color
-      }
-      return newColors;
-    });
-  }, [variant, getRandomColor]);
+  const handleInteraction = useCallback(
+    (key: string) => {
+      if (variant === 'none') return;
+
+      setPersistentColors((prev) => {
+        const newColors = { ...prev };
+        if (newColors[key]) {
+          delete newColors[key]; // Toggle off if already colored
+        } else {
+          newColors[key] = `var(${getRandomColor()})`; // Toggle on with new color
+        }
+        return newColors;
+      });
+    },
+    [variant, getRandomColor],
+  );
 
   // Memoize the rows array
   const rows = useMemo(() => Array.from({ length: ROWS }, (_, i) => i), [ROWS]);
@@ -80,23 +79,24 @@ export const BoxesCore = ({
   return (
     <div
       style={{
-        transform: `translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)`,
+        // Adjusted transform to fill the screen
+        transform: `translate(-50%, -50%) skewX(-48deg) skewY(14deg) scale(1.2) rotate(0deg) translateZ(0)`,
       }}
       className={cn(
-        'absolute left-1/4 p-4 -top-1/4 flex -translate-x-1/2 -translate-y-1/2 w-[100vw] h-screen pointer-events-none',
-        className
+        'fixed left-1/2 top-1/2 flex w-[200%] h-[200%] overflow-hidden', // Increased size further
+        className,
       )}
       {...rest}
     >
       {rows.map((i) => (
-        <motion.div 
-          key={`row-${i}`} 
+        <motion.div
+          key={`row-${i}`}
           className="w-16 h-8 border-l border-slate-700 relative pointer-events-auto"
         >
           {cols.map((j) => {
             const boxKey = `${i}-${j}`;
             const shouldRenderPlus = j % 2 === 0 && i % 2 === 0;
-            
+
             return (
               <motion.div
                 whileHover={{

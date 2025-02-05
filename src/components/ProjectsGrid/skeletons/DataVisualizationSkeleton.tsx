@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 export const DataVisualizationSkeleton = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div 
+    <div
       className="relative w-full h-full min-h-[6rem] rounded-xl bg-gray-100/80 dark:bg-gray-800/50 p-4 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -15,32 +15,25 @@ export const DataVisualizationSkeleton = () => {
       {/* Graph Background Grid */}
       <div className="absolute inset-0 grid grid-cols-6 grid-rows-4">
         {Array.from({ length: 28 }).map((_, i) => (
-          <div
-            key={i}
-            className="border-[0.5px] border-gray-200 dark:border-gray-700/50"
-          />
+          <div key={i} className="border-[0.5px] border-gray-200 dark:border-gray-700/50" />
         ))}
       </div>
 
       {/* Animated Line Graph */}
       <div className="relative h-full w-full">
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full"
-          preserveAspectRatio="none"
-        >
+        <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
           {/* Gradient Fill */}
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop
                 offset="0%"
                 className="text-blue-500/20 dark:text-blue-400/20"
-                style={{ stopColor: "currentColor" }}
+                style={{ stopColor: 'currentColor' }}
               />
               <stop
                 offset="100%"
                 className="text-transparent"
-                style={{ stopColor: "currentColor" }}
+                style={{ stopColor: 'currentColor' }}
               />
             </linearGradient>
           </defs>
@@ -53,7 +46,7 @@ export const DataVisualizationSkeleton = () => {
             strokeWidth="2"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
+            transition={{ duration: 2, ease: 'easeInOut' }}
           />
 
           {/* Animated Fill Area */}
@@ -70,4 +63,4 @@ export const DataVisualizationSkeleton = () => {
   );
 };
 
-export default DataVisualizationSkeleton; 
+export default DataVisualizationSkeleton;

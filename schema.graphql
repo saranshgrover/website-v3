@@ -282,6 +282,30 @@ interface FileFieldInterface {
   width: IntType
 }
 
+"""Specifies how to filter Single-file/image fields"""
+input FileFilter {
+  """
+  Search for records with an exact match. The specified value must be an Upload ID
+  """
+  eq: UploadId
+
+  """
+  Exclude records with an exact match. The specified value must be an Upload ID
+  """
+  neq: UploadId
+
+  """Filter records that have one of the specified uploads"""
+  in: [UploadId]
+
+  """Filter records that do not have one of the specified uploads"""
+  notIn: [UploadId]
+
+  """
+  Filter records with the specified field defined (i.e. with any value) or not
+  """
+  exists: BooleanType
+}
+
 """
 Represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).
 """
@@ -2323,6 +2347,56 @@ enum MuxThumbnailFormatType {
   gif
 }
 
+"""Record of type Nav (nav)"""
+type NavRecord implements RecordInterface {
+  _createdAt: DateTime!
+
+  """Editing URL"""
+  _editingUrl: String
+  _firstPublishedAt: DateTime
+  _isValid: BooleanType!
+  _modelApiKey: String!
+  _publicationScheduledAt: DateTime
+  _publishedAt: DateTime
+
+  """Generates SEO and Social card meta tags to be used in your frontend"""
+  _seoMetaTags(
+    """The locale to use to fetch the field's content"""
+    locale: SiteLocale
+  ): [Tag!]!
+  _status: ItemStatus!
+  _unpublishingScheduledAt: DateTime
+  _updatedAt: DateTime!
+  id: ItemId!
+  links: [NavlinkRecord!]!
+}
+
+"""Block of type NavLink (navlink)"""
+type NavlinkRecord implements RecordInterface {
+  _createdAt: DateTime!
+
+  """Editing URL"""
+  _editingUrl: String
+  _firstPublishedAt: DateTime
+  _isValid: BooleanType!
+  _modelApiKey: String!
+  _publicationScheduledAt: DateTime
+  _publishedAt: DateTime
+
+  """Generates SEO and Social card meta tags to be used in your frontend"""
+  _seoMetaTags(
+    """The locale to use to fetch the field's content"""
+    locale: SiteLocale
+  ): [Tag!]!
+  _status: ItemStatus!
+  _unpublishingScheduledAt: DateTime
+  _updatedAt: DateTime!
+  href: String!
+  id: ItemId!
+  label: String!
+  newTab: BooleanType!
+}
+
 """Specifies how to filter by image orientation"""
 input OrientationFilter {
   """Search uploads with the specified orientation"""
@@ -2342,6 +2416,8 @@ input PageModelFilter {
   _status: StatusFilter
   _updatedAt: UpdatedAtFilter
   _isValid: BooleanFilter
+  coverImage: FileFilter
+  excerpt: TextFilter
   seoAnalysis: JsonFilter
   seoSettingsSocial: SeoFilter
   slug: SlugFilter
@@ -2402,6 +2478,11 @@ type PageRecord implements RecordInterface {
   _status: ItemStatus!
   _unpublishingScheduledAt: DateTime
   _updatedAt: DateTime!
+  coverImage: FileField
+  excerpt(
+    """Process content as markdown"""
+    markdown: Boolean
+  ): String
   id: ItemId!
   seoAnalysis: JsonField
   seoSettingsSocial: SeoField
@@ -2523,6 +2604,17 @@ type Query {
     """
     fallbackLocales: [SiteLocale!]
   ): HomeRecord
+
+  """Returns the single instance record"""
+  nav(
+    """The locale to use to fetch the field's content"""
+    locale: SiteLocale
+
+    """
+    If you want to fallback to a default translation when a translation has not been found
+    """
+    fallbackLocales: [SiteLocale!]
+  ): NavRecord
 
   """Returns a specific record"""
   page(
@@ -2748,6 +2840,30 @@ type Tag {
   attributes: MetaTagAttributes
   content: String
   tag: String!
+}
+
+"""Specifies how to filter text fields"""
+input TextFilter {
+  """Filter records based on a regular expression"""
+  matches: StringMatchesFilter
+
+  """Exclude records based on a regular expression"""
+  notMatches: StringMatchesFilter
+
+  """
+  Filter records with the specified field set as blank (null or empty string)
+  """
+  isBlank: BooleanType
+
+  """
+  Filter records with the specified field present (neither null, nor empty string)
+  """
+  isPresent: BooleanType
+
+  """
+  Filter records with the specified field defined (i.e. with any value) or not [DEPRECATED]
+  """
+  exists: BooleanType
 }
 
 """Specifies how to filter by upload type"""

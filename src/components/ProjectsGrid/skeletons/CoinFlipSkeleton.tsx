@@ -56,4 +56,4 @@ export const CoinFlipSkeleton = () => {
       </div>
     </motion.div>
   );
-}; 
+};

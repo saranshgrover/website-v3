@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "pbs.twimg.com",
+        hostname: 'pbs.twimg.com',
       },
     ],
   },

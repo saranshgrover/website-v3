@@ -100,4 +100,4 @@ export const RubiksCubeSkeleton = () => {
       </motion.div>
     </motion.div>
   );
-}; 
+};

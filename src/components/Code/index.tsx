@@ -23,7 +23,9 @@ export default function Code({ node }: Props) {
   return (
     <pre
       className={cn(
-        'rounded-lg border bg-muted px-4 py-3 font-mono text-sm',
+        'rounded-lg border px-4 py-3 font-mono text-sm',
+        'bg-zinc-50 dark:bg-zinc-900',
+        'text-zinc-900 dark:text-zinc-50',
         `language-${node.language}`,
       )}
     >
