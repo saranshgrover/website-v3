@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -11,11 +10,6 @@ import { executeQuery } from '@/lib/datocms/executeQuery';
 import { generateMetadataFn } from '@/lib/datocms/generateMetadataFn';
 import { graphql } from '@/lib/datocms/graphql';
 import { ResultOf } from 'gql.tada';
-const VideoBlock = dynamic(() => import('@/components/blocks/VideoBlock'));
-const ImageBlock = dynamic(() => import('@/components/blocks/ImageBlock'));
-const ImageGalleryBlock = dynamic(() => import('@/components/blocks/ImageGalleryBlock'));
-const Code = dynamic(() => import('@/components/Code'));
-const HeadingWithAnchorLink = dynamic(() => import('@/components/HeadingWithAnchorLink'));
 
 const homeQuery = graphql(
   /* GraphQL */ `

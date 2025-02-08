@@ -1,117 +1,170 @@
 'use client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 type BoxesProps = {
   className?: string;
-  variant?: 'none' | 'scroll' | 'click' | 'random';
-  randomBoxCount?: number; // Number of boxes to randomly highlight
+  variant?: 'none' | 'click' | 'random';
 };
 
-export const BoxesCore = ({
-  className,
-  variant = 'none',
-  randomBoxCount = 30,
-  ...rest
-}: BoxesProps) => {
-  // Increase grid size further
-  const ROWS = 150;
-  const COLS = 120;
+// Polyfill for requestIdleCallback
+const requestIdleCallback =
+  typeof window !== 'undefined'
+    ? window.requestIdleCallback ||
+    ((cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
+    : (cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
 
-  const colors = useMemo(
-    () => ['--white-300', '--red-500', '--blue-500', '--orange-500', '--green-500', '--yellow-300'],
-    [],
-  );
+const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
+  const [isClient, setIsClient] = useState(false);
+  const [renderedRows, setRenderedRows] = useState<number[]>([]);
+  const requestRef = useRef<number>();
 
-  // State to store persistent colors
+  // Reduce grid size for better mobile performance
+  const rows = new Array(100).fill(1);
+  const cols = new Array(80).fill(1);
+
+  const colors = [
+    '--sky-300',
+    '--pink-300',
+    '--green-300',
+    '--yellow-300',
+    '--red-300',
+    '--purple-300',
+    '--blue-300',
+    '--indigo-300',
+    '--violet-300',
+  ];
+
   const [persistentColors, setPersistentColors] = useState<{ [key: string]: string }>({});
 
-  // Memoize the getRandomColor function
   const getRandomColor = useCallback(() => {
     return colors[Math.floor(Math.random() * colors.length)];
-  }, [colors]);
+  }, []);
 
   // Initialize random boxes when variant is 'random'
   useEffect(() => {
-    if (variant === 'random') {
+    if (variant === 'random' && Object.keys(persistentColors).length === 0) {
       const initialColors: { [key: string]: string } = {};
-      const totalBoxes = ROWS * COLS;
+      const totalBoxes = rows.length * cols.length;
+      const randomBoxCount = Math.floor(totalBoxes * 0.1);
       const boxIndices = new Set<number>();
 
-      // Generate unique random box indices
       while (boxIndices.size < randomBoxCount) {
         boxIndices.add(Math.floor(Math.random() * totalBoxes));
       }
 
-      // Set colors for random boxes
       boxIndices.forEach((index) => {
-        const row = Math.floor(index / COLS);
-        const col = index % COLS;
+        const row = Math.floor(index / cols.length);
+        const col = index % cols.length;
         initialColors[`${row}-${col}`] = `var(${getRandomColor()})`;
       });
 
       setPersistentColors(initialColors);
     }
-  }, [variant, randomBoxCount, ROWS, COLS, getRandomColor]);
+  }, [variant]);
 
-  const handleInteraction = useCallback(
-    (key: string) => {
-      if (variant === 'none') return;
+  // Progressive rendering for mobile
+  useEffect(() => {
+    setIsClient(true);
 
-      setPersistentColors((prev) => {
-        const newColors = { ...prev };
-        if (newColors[key]) {
-          delete newColors[key]; // Toggle off if already colored
-        } else {
-          newColors[key] = `var(${getRandomColor()})`; // Toggle on with new color
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) {
+      setRenderedRows(rows.map((_, i) => i));
+      return;
+    }
+
+    let currentRow = 0;
+    const BATCH_SIZE = 10; // Render 10 rows at a time
+
+    const renderNextBatch = () => {
+      requestRef.current = requestIdleCallback(() => {
+        const nextRows = [];
+        for (let i = 0; i < BATCH_SIZE && currentRow < rows.length; i++) {
+          nextRows.push(currentRow);
+          currentRow++;
         }
-        return newColors;
-      });
-    },
-    [variant, getRandomColor],
-  );
 
-  // Memoize the rows array
-  const rows = useMemo(() => Array.from({ length: ROWS }, (_, i) => i), [ROWS]);
-  const cols = useMemo(() => Array.from({ length: COLS }, (_, i) => i), [COLS]);
+        setRenderedRows(prev => [...prev, ...nextRows]);
+
+        if (currentRow < rows.length) {
+          renderNextBatch();
+        }
+      });
+    };
+
+    renderNextBatch();
+
+    return () => {
+      if (requestRef.current) {
+        cancelIdleCallback(requestRef.current);
+      }
+    };
+  }, []);
+
+  const handleClick = useCallback((key: string) => {
+    if (variant === 'none') return;
+
+    setPersistentColors((prev) => {
+      const newColors = { ...prev };
+      if (newColors[key]) {
+        delete newColors[key];
+      } else {
+        newColors[key] = `var(${getRandomColor()})`;
+      }
+      return newColors;
+    });
+  }, [variant, getRandomColor]);
+
+  if (!isClient) {
+    return null; // Prevent SSR flash
+  }
 
   return (
     <div
       style={{
-        // Adjusted transform to fill the screen
-        transform: `translate(-50%, -50%) skewX(-48deg) skewY(14deg) scale(1.2) rotate(0deg) translateZ(0)`,
+        transform: `translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)`,
       }}
       className={cn(
-        'fixed left-1/2 top-1/2 flex w-[200%] h-[200%] overflow-hidden', // Increased size further
-        className,
+        'fixed left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] z-0',
+        'will-change-transform transform-gpu',
+        'md:w-[200%] md:h-[200%] md:left-1/4 md:p-4 md:-top-1/4',
+        className
       )}
       {...rest}
     >
-      {rows.map((i) => (
+      {renderedRows.map((i) => (
         <motion.div
-          key={`row-${i}`}
-          className="w-16 h-8 border-l border-slate-700 relative pointer-events-auto"
+          key={`row${i}`}
+          className="w-16 h-8 border-l border-slate-700 relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
         >
-          {cols.map((j) => {
+          {cols.map((_, j) => {
             const boxKey = `${i}-${j}`;
-            const shouldRenderPlus = j % 2 === 0 && i % 2 === 0;
+            const hasColor = persistentColors[boxKey];
 
             return (
               <motion.div
+                key={`col${j}`}
+                onClick={() => handleClick(boxKey)}
+                className="w-16 h-8 border-r border-t border-slate-700 relative cursor-crosshair"
+                style={{
+                  backgroundColor: hasColor || undefined,
+                }}
                 whileHover={{
-                  backgroundColor: `var(${getRandomColor()})`,
+                  backgroundColor: variant === 'none' ? undefined : `var(${getRandomColor()})`,
                   transition: { duration: 0 },
                 }}
-                animate={{
-                  backgroundColor: persistentColors[boxKey] || '',
-                  transition: { duration: 2 },
-                }}
-                onClick={() => handleInteraction(boxKey)}
-                key={`${boxKey}`}
-                className="w-16 h-8 border-r border-t border-slate-700 relative cursor-crosshair"
+                {...(hasColor && {
+                  animate: {
+                    backgroundColor: hasColor,
+                    transition: { duration: 2 },
+                  },
+                })}
               >
-                {shouldRenderPlus && (
+                {j % 2 === 0 && i % 2 === 0 ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -120,9 +173,13 @@ export const BoxesCore = ({
                     stroke="currentColor"
                     className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-700 stroke-[1px] pointer-events-none"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v12m6-6H6"
+                    />
                   </svg>
-                )}
+                ) : null}
               </motion.div>
             );
           })}
@@ -132,4 +189,8 @@ export const BoxesCore = ({
   );
 };
 
-export const Boxes = React.memo(BoxesCore);
+// Wrap with React.memo with custom comparison
+export const Boxes = React.memo(BoxesCore, (prevProps, nextProps) => {
+  return prevProps.variant === nextProps.variant &&
+    prevProps.className === nextProps.className;
+});

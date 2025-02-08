@@ -30,7 +30,7 @@ export default function HomeArticle({ home }: HomeArticleProps) {
     <div className="relative  min-h-screen overflow-x-hidden">
       {/* Background Boxes - Updated positioning */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <Boxes variant="random" randomBoxCount={500} className="opacity-20" />
+        <Boxes variant="random" className="opacity-20" />
       </div>
 
       <motion.article transition={{ duration: 0.5 }}>
@@ -45,7 +45,7 @@ export default function HomeArticle({ home }: HomeArticleProps) {
             >
               <TypewriterEffect
                 words={words}
-                className="text-6xl md:text-7xl font-bold tracking-tight"
+                className="text-5xl xs:text-2xl md:text-7xl font-bold tracking-tight"
               />
             </motion.div>
 

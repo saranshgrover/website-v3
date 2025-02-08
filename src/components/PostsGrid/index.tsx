@@ -36,7 +36,7 @@ export function PostsGrid({ posts }: PostsGridProps) {
   return (
     <div className="relative min-h-screen">
       {/* Background Boxes */}
-      <Boxes variant="random" randomBoxCount={500} className="opacity-20" />
+      <Boxes variant="random" className="opacity-20" />
 
       <div className="relative z-10">
         {/* Header Section */}

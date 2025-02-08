@@ -1,103 +1,85 @@
 'use client';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-const cubeVariants = {
-  initial: {
-    rotateX: -20,
-    rotateY: -20,
-  },
-  hover: {
-    rotateX: [0, 360],
-    rotateY: [0, 360],
-    transition: {
-      duration: 5,
-      ease: 'linear',
-    },
-  },
+const COLORS = {
+  white: 'bg-orange-500',
+  green: 'bg-green-500',
+  red: 'bg-red-500',
+  blue: 'bg-blue-500',
+  orange: 'bg-orange-500',
+  yellow: 'bg-yellow-500',
 };
 
-const generateCubieColors = (baseColor: string) => {
-  return [...Array(9)].map(() => {
-    const colors = [
-      'bg-red-500',
-      'bg-blue-500',
-      'bg-green-500',
-      'bg-yellow-400',
-      'bg-white',
-      'bg-orange-500',
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  });
+type FaceProps = {
+  initialColor?: string;
 };
 
-interface FaceProps {
-  baseColor: string;
-  rotate?: string;
-  translate?: string;
-}
+const Face = ({ initialColor = COLORS.white }: FaceProps) => {
+  const [color, setColor] = useState(initialColor);
 
-const Face = ({ baseColor, rotate = '', translate = '' }: FaceProps) => {
-  const colors = generateCubieColors(baseColor);
+  useEffect(() => {
+    // Only randomize colors after initial render
+    const colors = Object.values(COLORS);
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    setColor(randomColor);
+  }, []);
+
   return (
     <div
-      className={`grid grid-cols-3 gap-0.5 absolute w-24 h-24 ${rotate} ${translate}`}
+      className={`${initialColor} rounded-sm border border-black/10 shadow-inner`}
       style={{
-        transformStyle: 'preserve-3d',
-        backfaceVisibility: 'hidden',
+        opacity: 0.8,
       }}
-    >
-      {colors.map((color, i) => (
-        <div
-          key={i}
-          className={`${color} rounded-sm border border-black/10 shadow-inner`}
-          style={{ aspectRatio: '1' }}
-        />
-      ))}
-    </div>
+    />
   );
 };
 
 export const RubiksCubeSkeleton = () => {
   return (
-    <motion.div
-      className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] items-center justify-center perspective-1000"
-      initial="initial"
-      whileHover="hover"
-    >
-      <motion.div
-        variants={cubeVariants}
-        className="relative w-24 h-24"
-        style={{
-          transformStyle: 'preserve-3d',
-        }}
-      >
-        <Face baseColor="bg-red-500" translate="transform translateZ-[48px]" />
-        <Face
-          baseColor="bg-blue-500"
-          rotate="rotateY(90deg)"
-          translate="transform translateX-[48px]"
-        />
-        <Face
-          baseColor="bg-green-500"
-          rotate="rotateY(-90deg)"
-          translate="transform translateX-[-48px]"
-        />
-        <Face
-          baseColor="bg-yellow-400"
-          rotate="rotateX(90deg)"
-          translate="transform translateY-[-48px]"
-        />
-        <Face
-          baseColor="bg-white"
-          rotate="rotateX(-90deg)"
-          translate="transform translateY-[48px]"
-        />
-        <Face
-          baseColor="bg-orange-500"
-          translate="transform translateZ-[-48px]"
-          rotate="rotateY(180deg)"
-        />
-      </motion.div>
-    </motion.div>
+    <div className="flex items-center justify-center w-full h-full bg-neutral-950">
+      <div className="relative w-32 h-32 [transform-style:preserve-3d] animate-slow-spin">
+        {/* Front face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`front-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+
+        {/* Back face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:rotateY(180deg)_translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`back-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+
+        {/* Right face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:rotateY(90deg)_translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`right-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+
+        {/* Left face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:rotateY(-90deg)_translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`left-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+
+        {/* Top face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:rotateX(90deg)_translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`top-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+
+        {/* Bottom face */}
+        <div className="absolute w-full h-full grid grid-cols-3 gap-1 p-1 [transform:rotateX(-90deg)_translateZ(4rem)]">
+          {[...Array(9)].map((_, i) => (
+            <Face key={`bottom-${i}`} initialColor={COLORS.white} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
