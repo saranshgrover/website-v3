@@ -31,4 +31,4 @@ export function useWindowSize() {
   }, []); // Empty array ensures effect is only run on mount
 
   return windowSize;
-} 
+}

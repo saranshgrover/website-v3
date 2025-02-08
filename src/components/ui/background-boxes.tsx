@@ -12,7 +12,7 @@ type BoxesProps = {
 const requestIdleCallback =
   typeof window !== 'undefined'
     ? window.requestIdleCallback ||
-    ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
+      ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
     : (cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
 
 const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
@@ -85,7 +85,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
           currentRow++;
         }
 
-        setRenderedRows(prev => [...prev, ...nextRows]);
+        setRenderedRows((prev) => [...prev, ...nextRows]);
 
         if (currentRow < rows.length) {
           renderNextBatch();
@@ -102,19 +102,22 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
     };
   }, []);
 
-  const handleClick = useCallback((key: string) => {
-    if (variant === 'none') return;
+  const handleClick = useCallback(
+    (key: string) => {
+      if (variant === 'none') return;
 
-    setPersistentColors((prev) => {
-      const newColors = { ...prev };
-      if (newColors[key]) {
-        delete newColors[key];
-      } else {
-        newColors[key] = `var(${getRandomColor()})`;
-      }
-      return newColors;
-    });
-  }, [variant, getRandomColor]);
+      setPersistentColors((prev) => {
+        const newColors = { ...prev };
+        if (newColors[key]) {
+          delete newColors[key];
+        } else {
+          newColors[key] = `var(${getRandomColor()})`;
+        }
+        return newColors;
+      });
+    },
+    [variant, getRandomColor],
+  );
 
   if (!isClient) {
     return null; // Prevent SSR flash
@@ -129,7 +132,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
         'fixed left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] z-0',
         'will-change-transform transform-gpu',
         'md:w-[200%] md:h-[200%] md:left-1/4 md:p-4 md:-top-1/4',
-        className
+        className,
       )}
       {...rest}
     >
@@ -173,11 +176,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
                     stroke="currentColor"
                     className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-700 stroke-[1px] pointer-events-none"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6v12m6-6H6"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                   </svg>
                 ) : null}
               </motion.div>
@@ -191,6 +190,5 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
 
 // Wrap with React.memo with custom comparison
 export const Boxes = React.memo(BoxesCore, (prevProps, nextProps) => {
-  return prevProps.variant === nextProps.variant &&
-    prevProps.className === nextProps.className;
+  return prevProps.variant === nextProps.variant && prevProps.className === nextProps.className;
 });
