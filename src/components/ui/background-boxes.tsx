@@ -12,13 +12,13 @@ type BoxesProps = {
 const requestIdleCallback =
   typeof window !== 'undefined'
     ? window.requestIdleCallback ||
-    ((cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
-    : (cb) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
+    ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
+    : (cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
 
 const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
   const [isClient, setIsClient] = useState(false);
   const [renderedRows, setRenderedRows] = useState<number[]>([]);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number | undefined | NodeJS.Timeout>();
 
   // Reduce grid size for better mobile performance
   const rows = new Array(100).fill(1);
@@ -79,7 +79,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
 
     const renderNextBatch = () => {
       requestRef.current = requestIdleCallback(() => {
-        const nextRows = [];
+        const nextRows: number[] = [];
         for (let i = 0; i < BATCH_SIZE && currentRow < rows.length; i++) {
           nextRows.push(currentRow);
           currentRow++;
@@ -97,7 +97,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
 
     return () => {
       if (requestRef.current) {
-        cancelIdleCallback(requestRef.current);
+        cancelIdleCallback(requestRef.current as number);
       }
     };
   }, []);
