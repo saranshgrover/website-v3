@@ -24,11 +24,12 @@ const items = [
   {
     title: 'CoinFlip',
     description:
-      'I lead Web Development for CoinFlip, including the CoinFlip Website, Locator CoinFlip Preferred for over 300,000 crypto customers',
+      'I lead Web Development for CoinFlip, including the CoinFlip Website, CoinFlip Locator, and CoinFlip Preferred for over 300,000 crypto customers',
     header: <CoinFlipSkeleton />,
     className: 'md:col-span-3',
     icon: <Bitcoin className="h-4 w-4 text-neutral-500" />,
     slug: 'coinflip',
+    href: 'https://www.coinflip.tech',
   },
   {
     title: 'Soliyarn Smart Wearables',
@@ -38,6 +39,7 @@ const items = [
     icon: <Shirt className="h-4 w-4 text-neutral-500" />,
     className: 'md:col-span-2',
     slug: 'soliyarn',
+    href: 'https://soliyarn.com',
   },
   {
     title: 'Cubing Wrapped',
@@ -57,6 +59,7 @@ const items = [
     skeleton: 'default',
     className: 'md:col-span-2',
     slug: 'mango_lakay',
+    href: 'https://www.mangolakay.com',
   },
   {
     title: 'WCA Website Usability',
@@ -65,6 +68,7 @@ const items = [
     header: <RubiksCubeSkeleton />,
     icon: <Search className="h-4 w-4 text-neutral-500" />,
     slug: 'wca_usability',
+    href: 'https://www.worldcubeassociation.org',
   },
   {
     title: 'Politech',
@@ -73,6 +77,7 @@ const items = [
     header: <DataVisualizationSkeleton />,
     icon: <Map className="h-4 w-4 text-neutral-500" />,
     slug: 'politech',
+    href: "https://www.stonybrook.edu/commcms/vertically-integrated-projects/teams/_team_page/team_page.php?team=PoliTech"
   },
   {
     title: 'Nodus',
@@ -90,6 +95,7 @@ const items = [
     header: <RubiksCubeSkeleton />,
     icon: <Cuboid className="h-4 w-4 text-neutral-500" />,
     slug: 'cah',
+    href: 'https://cubingathome.netlifyapp.com',
   },
 ];
 
@@ -104,6 +110,7 @@ export default function ProjectsGrid() {
           header={item.header || <DefaultSkeleton />}
           className={cn('[&>p:text-lg]', item.className)}
           icon={item.icon}
+          href={item.href}
         />
       ))}
     </BentoGrid>
