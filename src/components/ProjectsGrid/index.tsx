@@ -77,7 +77,7 @@ const items = [
     header: <DataVisualizationSkeleton />,
     icon: <Map className="h-4 w-4 text-neutral-500" />,
     slug: 'politech',
-    href: "https://www.stonybrook.edu/commcms/vertically-integrated-projects/teams/_team_page/team_page.php?team=PoliTech"
+    href: 'https://www.stonybrook.edu/commcms/vertically-integrated-projects/teams/_team_page/team_page.php?team=PoliTech',
   },
   {
     title: 'Nodus',

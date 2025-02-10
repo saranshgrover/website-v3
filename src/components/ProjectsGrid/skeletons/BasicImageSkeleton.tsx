@@ -77,4 +77,4 @@ export const BasicImageSkeleton = ({ type }: BasicImageSkeletonProps) => {
       </div>
     </div>
   );
-}; 
+};

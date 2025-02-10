@@ -57,22 +57,16 @@ export const BentoGridItem = ({
   const wrapperClasses = cn(
     'row-span-1 rounded-xl group/bento hover:shadow-2xl hover:scale-[1.02] transition duration-300 ease-out shadow-xl dark:shadow-none p-6 dark:bg-zinc-900 dark:border-white/[0.2] bg-white border-2 border-neutral-200 dark:border-zinc-800 justify-between flex flex-col space-y-4 relative overflow-hidden hover:border-neutral-300 dark:hover:border-zinc-600',
     'before:absolute before:inset-0 before:bg-gradient-to-br before:from-neutral-100 before:to-neutral-50 dark:before:from-zinc-800 dark:before:to-zinc-900 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 before:-z-10',
-    className
+    className,
   );
 
   if (href) {
     const isExternalLink = href.startsWith('http');
     const LinkComponent = isExternalLink ? 'a' : Link;
-    const linkProps = isExternalLink
-      ? { target: '_blank', rel: 'noopener noreferrer' }
-      : {};
+    const linkProps = isExternalLink ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
     return (
-      <LinkComponent
-        href={href}
-        className={wrapperClasses}
-        {...linkProps}
-      >
+      <LinkComponent href={href} className={wrapperClasses} {...linkProps}>
         {content}
       </LinkComponent>
     );
