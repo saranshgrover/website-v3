@@ -7,6 +7,7 @@ import { draftMode } from 'next/headers';
 import { toNextMetadata } from 'react-datocms';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Footer } from '@/components/Footer';
+import { AmplitudeAnalytics } from '@/components/AmplitudeAnalytics';
 
 import './global.css';
 
@@ -60,6 +61,7 @@ export default async function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
+        <AmplitudeAnalytics />
       </body>
     </html>
   );

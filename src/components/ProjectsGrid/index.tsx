@@ -1,24 +1,11 @@
 'use client';
 import { cn } from '@/lib/utils';
-import {
-  ClipboardCopy,
-  Table,
-  Gamepad2,
-  Search,
-  Shirt,
-  Timer,
-  Map,
-  Bitcoin,
-  Smartphone,
-  Store,
-  BarChart3,
-  Cuboid,
-} from 'lucide-react';
+import { Bitcoin, Cuboid, Map, Search, Shirt, Smartphone, Store } from 'lucide-react';
 import { BentoGrid, BentoGridItem } from '../ui/bento-grid';
 import { CoinFlipSkeleton } from './skeletons/CoinFlipSkeleton';
 import { DataVisualizationSkeleton } from './skeletons/DataVisualizationSkeleton';
-import { RubiksCubeSkeleton } from './skeletons/RubiksCubeSkeleton';
 import { DefaultSkeleton } from './skeletons/DefaultSkeleton';
+import { RubiksCubeSkeleton } from './skeletons/RubiksCubeSkeleton';
 
 const items = [
   {
@@ -51,6 +38,15 @@ const items = [
     slug: 'cubing_wrapped',
   },
   {
+    title: 'Drop Off Table',
+    description:
+      'A progressive web app providing live event feedback and management tools for competition organizers',
+    header: <DefaultSkeleton />,
+    icon: <Smartphone className="h-4 w-4 text-neutral-500" />,
+    slug: 'drop-off-table',
+    href: 'https://dropofftable.com',
+  },
+  {
     title: 'Mango Lakay',
     description:
       'Redesigning an online directory platform to better serve Haitian vendors and promote economic growth',
@@ -79,14 +75,6 @@ const items = [
     slug: 'politech',
     href: 'https://www.stonybrook.edu/commcms/vertically-integrated-projects/teams/_team_page/team_page.php?team=PoliTech',
   },
-  {
-    title: 'Nodus',
-    description:
-      'A progressive web app providing live event feedback and management tools for competition organizers',
-    header: <DefaultSkeleton />,
-    icon: <Smartphone className="h-4 w-4 text-neutral-500" />,
-    slug: 'nodus',
-  },
 
   {
     title: 'Cubing at Home',
@@ -95,7 +83,7 @@ const items = [
     header: <RubiksCubeSkeleton />,
     icon: <Cuboid className="h-4 w-4 text-neutral-500" />,
     slug: 'cah',
-    href: 'https://cubingathome.netlifyapp.com',
+    href: 'https://cubingathome.netlify.app/',
   },
 ];
 

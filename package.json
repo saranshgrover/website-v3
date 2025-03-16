@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -12,6 +13,8 @@
     "prepare": "npx simple-git-hooks && npm run generate-schema"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.12.0",
+    "@amplitude/plugin-session-replay-browser": "^1.13.6",
     "@datocms/cda-client": "^0.2.1",
     "@datocms/cma-client": "^3.3.5",
     "@radix-ui/react-scroll-area": "^1.2.1",
