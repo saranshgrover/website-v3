@@ -12,7 +12,7 @@ type BoxesProps = {
 const requestIdleCallback =
   typeof window !== 'undefined'
     ? window.requestIdleCallback ||
-      ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
+    ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
     : (cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
 
 const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
@@ -20,9 +20,10 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
   const [renderedRows, setRenderedRows] = useState<number[]>([]);
   const requestRef = useRef<number | undefined | NodeJS.Timeout>();
 
-  // Reduce grid size for better mobile performance
-  const rows = new Array(100).fill(1);
-  const cols = new Array(80).fill(1);
+  // Adjust grid size based on device
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const rows = new Array(isMobile ? 50 : 100).fill(1);
+  const cols = new Array(isMobile ? 40 : 80).fill(1);
 
   const colors = [
     '--sky-300',
@@ -119,6 +120,28 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
     [variant, getRandomColor],
   );
 
+  // Optimize animations for mobile
+  const getAnimationProps = useCallback(() => {
+    if (isMobile) {
+      return {
+        transition: { duration: 0.1 }, // Faster transitions
+        animate: { opacity: 1 },
+      };
+    }
+    return {
+      transition: { duration: 0.2 },
+      animate: { opacity: 1 },
+    };
+  }, [isMobile]);
+
+  // Measure specific operations
+  const measureOperation = (operationName: string) => {
+    performance.mark(`${operationName}-start`);
+    // ... operation code ...
+    performance.mark(`${operationName}-end`);
+    performance.measure(operationName, `${operationName}-start`, `${operationName}-end`);
+  };
+
   if (!isClient) {
     return null; // Prevent SSR flash
   }
@@ -141,8 +164,7 @@ const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
           key={`row${i}`}
           className="w-16 h-8 border-l border-slate-700 relative"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2 }}
+          {...getAnimationProps()}
         >
           {cols.map((_, j) => {
             const boxKey = `${i}-${j}`;
