@@ -1,5 +1,4 @@
 import { track, init } from '@amplitude/analytics-browser';
-import { sessionReplay } from '@amplitude/plugin-session-replay-browser';
 
 const AMPLITUDE_API_KEY = 'b60a0093f9616847e57c3c71a021c19e';
 
@@ -12,13 +11,6 @@ export const initializeAnalytics = () => {
         elementInteractions: true,
       },
     });
-
-    // Add session replay plugin
-    track.add(
-      sessionReplay.plugin({
-        sampleRate: 1,
-      }),
-    );
   }
 };
 
