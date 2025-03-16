@@ -12,7 +12,7 @@ type BoxesProps = {
 const requestIdleCallback =
   typeof window !== 'undefined'
     ? window.requestIdleCallback ||
-    ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
+      ((cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1))
     : (cb: any) => setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 1);
 
 const BoxesCore = ({ className, variant = 'click', ...rest }: BoxesProps) => {
